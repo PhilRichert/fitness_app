@@ -11,7 +11,7 @@ export const LogoutButton: React.FC = () => {
       onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
     >
       <LogOut className="h-5 w-5" />
-      <span>Log Out</span>
+      <span>Abmelden</span>
     </button>
   );
 };

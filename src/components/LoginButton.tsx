@@ -11,7 +11,7 @@ export const LoginButton: React.FC = () => {
       onClick={() => loginWithRedirect()}
     >
       <LogIn className="h-5 w-5" />
-      <span>Log In</span>
+      <span>Anmelden</span>
     </button>
   );
 };

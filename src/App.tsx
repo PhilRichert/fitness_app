@@ -59,14 +59,14 @@ function App() {
               className={`flex items-center space-x-1 px-3 py-2 rounded-md transition ${currentPage === 'schedule' ? 'bg-indigo-700' : 'hover:bg-indigo-700'}`}
             >
               <Calendar className="h-5 w-5" />
-              <span>Schedule</span>
+              <span>Zeitplan</span>
             </button>
             <button 
               onClick={() => setCurrentPage('progress')}
               className={`flex items-center space-x-1 px-3 py-2 rounded-md transition ${currentPage === 'progress' ? 'bg-indigo-700' : 'hover:bg-indigo-700'}`}
             >
               <LineChart className="h-5 w-5" />
-              <span>Progress</span>
+              <span>Fortschritt</span>
             </button>
             <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-indigo-500">
               <UserProfile />
@@ -108,7 +108,7 @@ function App() {
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition ${currentPage === 'schedule' ? 'bg-indigo-800' : 'hover:bg-indigo-800'}`}
               >
                 <Calendar className="h-5 w-5" />
-                <span>Schedule</span>
+                <span>Zeitplan</span>
               </button>
               <button 
                 onClick={() => {
@@ -118,7 +118,7 @@ function App() {
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md transition ${currentPage === 'progress' ? 'bg-indigo-800' : 'hover:bg-indigo-800'}`}
               >
                 <LineChart className="h-5 w-5" />
-                <span>Progress</span>
+                <span>Fortschritt</span>
               </button>
               <div className="pt-2 mt-2 border-t border-indigo-600">
                 <LogoutButton />
@@ -136,7 +136,7 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto px-4 text-center">
-          <p>© 2025 FitTrack. All rights reserved.</p>
+          <p>© 2025 FitTrack. Alle Rechte vorbehalten.</p>
         </div>
       </footer>
     </div>

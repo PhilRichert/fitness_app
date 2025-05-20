@@ -21,10 +21,10 @@ const LoginPage: React.FC = () => {
             <h1 className="text-2xl font-bold text-indigo-600">FitTrack</h1>
           </div>
           
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">Track your fitness journey</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Verfolge deinen Fitnessfortschritt</h2>
           <p className="text-gray-600 mb-8">
-            Join thousands of users who are achieving their fitness goals with FitTrack. 
-            Log workouts, track progress, and stay motivated.
+            Schließe dich tausenden von Nutzern an, die mit FitTrack ihre Fitnessziele erreichen. 
+            Protokolliere Workouts, verfolge Fortschritte und bleibe motiviert.
           </p>
           
           <div className="space-y-4">
@@ -33,8 +33,8 @@ const LoginPage: React.FC = () => {
                 <Activity className="h-5 w-5 text-indigo-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Track Workouts</h3>
-                <p className="text-gray-600 text-sm">Log your exercises, sets, reps, and weights</p>
+                <h3 className="font-semibold text-gray-800">Workouts aufzeichnen</h3>
+                <p className="text-gray-600 text-sm">Protokolliere deine Übungen, Sätze, Wiederholungen und Gewichte</p>
               </div>
             </div>
             
@@ -43,8 +43,8 @@ const LoginPage: React.FC = () => {
                 <UserCheck className="h-5 w-5 text-indigo-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Personal Progress</h3>
-                <p className="text-gray-600 text-sm">Monitor your improvements over time</p>
+                <h3 className="font-semibold text-gray-800">Persönlicher Fortschritt</h3>
+                <p className="text-gray-600 text-sm">Beobachte deine Verbesserungen im Laufe der Zeit</p>
               </div>
             </div>
             
@@ -53,8 +53,8 @@ const LoginPage: React.FC = () => {
                 <Shield className="h-5 w-5 text-indigo-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">Secure Account</h3>
-                <p className="text-gray-600 text-sm">Your data is private and protected</p>
+                <h3 className="font-semibold text-gray-800">Sicheres Konto</h3>
+                <p className="text-gray-600 text-sm">Deine Daten sind privat und geschützt</p>
               </div>
             </div>
           </div>
@@ -62,9 +62,9 @@ const LoginPage: React.FC = () => {
         
         {/* Right side - Login */}
         <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Welcome back</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Willkommen zurück</h2>
           <p className="text-gray-600 mb-8">
-            Sign in to access your personal fitness dashboard
+            Melde dich an, um auf dein persönliches Fitness-Dashboard zuzugreifen
           </p>
           
           <div className="flex flex-col items-center space-y-6">
@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
             
             <div className="text-center">
               <p className="text-sm text-gray-500">
-                By signing in, you agree to our Terms of Service and Privacy Policy
+                Mit der Anmeldung stimmst du unseren Nutzungsbedingungen und der Datenschutzerklärung zu
               </p>
             </div>
           </div>

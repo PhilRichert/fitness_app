@@ -18,20 +18,20 @@ interface Exercise {
 const initialWorkouts: Workout[] = [
   {
     id: 1,
-    name: 'Full Body Workout',
+    name: 'Ganzkörper-Workout',
     exercises: [
-      { id: 1, name: 'Squats', sets: 3, reps: 12, weight: 135 },
-      { id: 2, name: 'Bench Press', sets: 3, reps: 10, weight: 155 },
-      { id: 3, name: 'Deadlifts', sets: 3, reps: 8, weight: 185 }
+      { id: 1, name: 'Kniebeugen', sets: 3, reps: 12, weight: 60 },
+      { id: 2, name: 'Bankdrücken', sets: 3, reps: 10, weight: 70 },
+      { id: 3, name: 'Kreuzheben', sets: 3, reps: 8, weight: 85 }
     ]
   },
   {
     id: 2,
-    name: 'Upper Body Focus',
+    name: 'Oberkörper-Fokus',
     exercises: [
-      { id: 1, name: 'Pull-ups', sets: 3, reps: 8, weight: 0 },
-      { id: 2, name: 'Shoulder Press', sets: 3, reps: 10, weight: 65 },
-      { id: 3, name: 'Bicep Curls', sets: 3, reps: 12, weight: 30 }
+      { id: 1, name: 'Klimmzüge', sets: 3, reps: 8, weight: 0 },
+      { id: 2, name: 'Schulterdrücken', sets: 3, reps: 10, weight: 30 },
+      { id: 3, name: 'Bizeps Curls', sets: 3, reps: 12, weight: 15 }
     ]
   }
 ];
@@ -116,7 +116,7 @@ const WorkoutPage: React.FC = () => {
       <div className="w-full md:w-1/3">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-800">My Workouts</h2>
+            <h2 className="text-xl font-bold text-gray-800">Meine Workouts</h2>
             <button 
               onClick={() => setShowAddWorkout(true)}
               className="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition"
@@ -126,7 +126,7 @@ const WorkoutPage: React.FC = () => {
           </div>
           
           {workouts.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No workouts yet. Create your first workout!</p>
+            <p className="text-gray-500 text-center py-4">Noch keine Workouts. Erstelle dein erstes Workout!</p>
           ) : (
             <div className="space-y-3">
               {workouts.map(workout => (
@@ -139,7 +139,7 @@ const WorkoutPage: React.FC = () => {
                     <Dumbbell className="h-5 w-5 text-indigo-600 mr-3" />
                     <div>
                       <h3 className="font-medium">{workout.name}</h3>
-                      <p className="text-sm text-gray-500">{workout.exercises.length} exercises</p>
+                      <p className="text-sm text-gray-500">{workout.exercises.length} Übungen</p>
                     </div>
                   </div>
                   <button 
@@ -161,7 +161,7 @@ const WorkoutPage: React.FC = () => {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold">Add New Workout</h3>
+                  <h3 className="text-lg font-bold">Neues Workout hinzufügen</h3>
                   <button onClick={() => setShowAddWorkout(false)}>
                     <X className="h-5 w-5 text-gray-500" />
                   </button>
@@ -175,7 +175,7 @@ const WorkoutPage: React.FC = () => {
                     value={newWorkoutName}
                     onChange={(e) => setNewWorkoutName(e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="e.g., Leg Day"
+                    placeholder="z.B. Beintraining"
                   />
                 </div>
                 <div className="flex justify-end">
@@ -183,7 +183,7 @@ const WorkoutPage: React.FC = () => {
                     onClick={handleAddWorkout}
                     className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
                   >
-                    Add Workout
+                    Workout hinzufügen
                   </button>
                 </div>
               </div>
@@ -203,22 +203,22 @@ const WorkoutPage: React.FC = () => {
                 className="bg-indigo-600 text-white px-3 py-2 rounded-md hover:bg-indigo-700 transition flex items-center"
               >
                 <Plus className="h-4 w-4 mr-1" />
-                <span>Add Exercise</span>
+                <span>Übung hinzufügen</span>
               </button>
             </div>
             
             {selectedWorkout.exercises.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">No exercises in this workout yet. Add your first exercise!</p>
+              <p className="text-gray-500 text-center py-8">Noch keine Übungen in diesem Workout. Füge deine erste Übung hinzu!</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exercise</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sets</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reps</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Übung</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sätze</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Wiederholungen</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gewicht</th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aktionen</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -234,7 +234,7 @@ const WorkoutPage: React.FC = () => {
                           {exercise.reps}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                          {exercise.weight} lbs
+                          {exercise.weight} kg
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button 
@@ -256,7 +256,7 @@ const WorkoutPage: React.FC = () => {
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-lg p-6 w-full max-w-md">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold">Add New Exercise</h3>
+                    <h3 className="text-lg font-bold">Neue Übung hinzufügen</h3>
                     <button onClick={() => setShowAddExercise(false)}>
                       <X className="h-5 w-5 text-gray-500" />
                     </button>
@@ -264,19 +264,19 @@ const WorkoutPage: React.FC = () => {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Exercise Name
+                        Übungsname
                       </label>
                       <input
                         type="text"
                         value={newExercise.name}
                         onChange={(e) => setNewExercise({...newExercise, name: e.target.value})}
                         className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="e.g., Squats"
+                        placeholder="z.B. Kniebeugen"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Sets
+                        Sätze
                       </label>
                       <input
                         type="number"
@@ -288,7 +288,7 @@ const WorkoutPage: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Reps
+                        Wiederholungen
                       </label>
                       <input
                         type="number"
@@ -300,7 +300,7 @@ const WorkoutPage: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Weight (lbs)
+                        Gewicht (kg)
                       </label>
                       <input
                         type="number"
@@ -316,7 +316,7 @@ const WorkoutPage: React.FC = () => {
                       onClick={handleAddExercise}
                       className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
                     >
-                      Add Exercise
+                      Übung hinzufügen
                     </button>
                   </div>
                 </div>
@@ -326,13 +326,13 @@ const WorkoutPage: React.FC = () => {
         ) : (
           <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center h-full min-h-[300px]">
             <Dumbbell className="h-16 w-16 text-gray-300 mb-4" />
-            <p className="text-gray-500 text-center">Select a workout from the list to view details</p>
+            <p className="text-gray-500 text-center">Wähle ein Workout aus der Liste aus, um Details anzuzeigen</p>
             {workouts.length === 0 && (
               <button 
                 onClick={() => setShowAddWorkout(true)}
                 className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
               >
-                Create Your First Workout
+                Erstelle dein erstes Workout
               </button>
             )}
           </div>

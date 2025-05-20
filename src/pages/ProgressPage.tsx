@@ -3,13 +3,13 @@ import { LineChart, BarChart, Activity, TrendingUp, Scale, Calendar } from 'luci
 
 // Mock data for charts
 const weightData = [
-  { date: '2025-01-01', value: 185 },
-  { date: '2025-01-08', value: 183 },
-  { date: '2025-01-15', value: 181 },
-  { date: '2025-01-22', value: 180 },
-  { date: '2025-01-29', value: 178 },
-  { date: '2025-02-05', value: 177 },
-  { date: '2025-02-12', value: 176 },
+  { date: '2025-01-01', value: 84 },
+  { date: '2025-01-08', value: 83 },
+  { date: '2025-01-15', value: 82 },
+  { date: '2025-01-22', value: 81.5 },
+  { date: '2025-01-29', value: 80.5 },
+  { date: '2025-02-05', value: 80 },
+  { date: '2025-02-12', value: 79.5 },
 ];
 
 const workoutData = [
@@ -22,9 +22,9 @@ const workoutData = [
 ];
 
 const strengthData = {
-  'Bench Press': [135, 145, 155, 160, 165, 170],
-  'Squat': [185, 195, 205, 215, 225, 235],
-  'Deadlift': [225, 235, 245, 255, 265, 275],
+  'Bankdrücken': [60, 65, 70, 72.5, 75, 77.5],
+  'Kniebeugen': [85, 90, 95, 97.5, 102.5, 107.5],
+  'Kreuzheben': [100, 105, 110, 115, 120, 125],
 };
 
 const ProgressPage: React.FC = () => {
@@ -45,7 +45,6 @@ const ProgressPage: React.FC = () => {
     setNewWeight('');
   };
 
-  // Calculate stats
   const calculateWeightChange = () => {
     if (weightLog.length < 2) return 0;
     return weightLog[weightLog.length - 1].value - weightLog[0].value;
@@ -62,9 +61,9 @@ const ProgressPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Weight Change</p>
+              <p className="text-sm text-gray-500">Gewichtsänderung</p>
               <p className={`text-2xl font-bold ${weightChange <= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {weightChange} lbs
+                {weightChange} kg
               </p>
             </div>
             <div className="p-3 bg-blue-100 rounded-full">
@@ -72,14 +71,14 @@ const ProgressPage: React.FC = () => {
             </div>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            {weightChange <= 0 ? 'Lost' : 'Gained'} since tracking began
+            {weightChange <= 0 ? 'Abgenommen' : 'Zugenommen'} seit Beginn
           </p>
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Workouts</p>
+              <p className="text-sm text-gray-500">Workouts Gesamt</p>
               <p className="text-2xl font-bold text-indigo-600">{totalWorkouts}</p>
             </div>
             <div className="p-3 bg-indigo-100 rounded-full">
@@ -87,14 +86,14 @@ const ProgressPage: React.FC = () => {
             </div>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            Completed since tracking began
+            Abgeschlossen seit Beginn
           </p>
         </div>
         
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Monthly Average</p>
+              <p className="text-sm text-gray-500">Monatlicher Durchschnitt</p>
               <p className="text-2xl font-bold text-purple-600">{avgWorkoutsPerMonth.toFixed(1)}</p>
             </div>
             <div className="p-3 bg-purple-100 rounded-full">
@@ -102,7 +101,7 @@ const ProgressPage: React.FC = () => {
             </div>
           </div>
           <p className="text-sm text-gray-500 mt-2">
-            Workouts per month
+            Workouts pro Monat
           </p>
         </div>
       </div>
@@ -114,19 +113,19 @@ const ProgressPage: React.FC = () => {
             onClick={() => setActiveTab('weight')}
             className={`flex-1 py-4 px-6 text-center font-medium ${activeTab === 'weight' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
           >
-            Weight Tracking
+            Gewichtsverlauf
           </button>
           <button 
             onClick={() => setActiveTab('workouts')}
             className={`flex-1 py-4 px-6 text-center font-medium ${activeTab === 'workouts' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
           >
-            Workout Frequency
+            Workout-Häufigkeit
           </button>
           <button 
             onClick={() => setActiveTab('strength')}
             className={`flex-1 py-4 px-6 text-center font-medium ${activeTab === 'strength' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-gray-700'}`}
           >
-            Strength Progress
+            Kraftentwicklung
           </button>
         </div>
         
@@ -134,20 +133,20 @@ const ProgressPage: React.FC = () => {
           {activeTab === 'weight' && (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold">Weight Over Time</h3>
+                <h3 className="text-lg font-bold">Gewicht im Zeitverlauf</h3>
                 <div className="flex space-x-2">
                   <input
                     type="number"
                     value={newWeight}
                     onChange={(e) => setNewWeight(e.target.value)}
-                    placeholder="Enter weight"
+                    placeholder="Gewicht eingeben"
                     className="w-24 p-2 border border-gray-300 rounded-md"
                   />
                   <button 
                     onClick={handleAddWeight}
                     className="bg-indigo-600 text-white px-3 py-2 rounded-md hover:bg-indigo-700 text-sm"
                   >
-                    Log Weight
+                    Gewicht eintragen
                   </button>
                 </div>
               </div>
@@ -156,7 +155,6 @@ const ProgressPage: React.FC = () => {
               <div className="h-64 relative">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-full">
-                    {/* This is a simplified chart representation */}
                     <div className="relative h-48">
                       <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-200"></div>
                       <div className="absolute left-0 bottom-0 top-0 w-px bg-gray-200"></div>
@@ -167,7 +165,7 @@ const ProgressPage: React.FC = () => {
                             <div 
                               className="w-2 bg-indigo-500 rounded-t-sm" 
                               style={{ 
-                                height: `${(item.value - 170) / 30 * 100}%`,
+                                height: `${(item.value - 75) / 15 * 100}%`,
                                 maxHeight: '100%'
                               }}
                             ></div>
@@ -180,9 +178,9 @@ const ProgressPage: React.FC = () => {
                       
                       {/* Y-axis labels */}
                       <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between">
-                        <span className="text-xs text-gray-500">200 lbs</span>
-                        <span className="text-xs text-gray-500">185 lbs</span>
-                        <span className="text-xs text-gray-500">170 lbs</span>
+                        <span className="text-xs text-gray-500">90 kg</span>
+                        <span className="text-xs text-gray-500">82.5 kg</span>
+                        <span className="text-xs text-gray-500">75 kg</span>
                       </div>
                     </div>
                   </div>
@@ -190,20 +188,20 @@ const ProgressPage: React.FC = () => {
               </div>
               
               <div className="mt-6">
-                <h4 className="font-medium mb-2">Recent Weight Entries</h4>
+                <h4 className="font-medium mb-2">Letzte Gewichtseinträge</h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weight (lbs)</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gewicht (kg)</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {weightLog.slice().reverse().slice(0, 5).map((entry, index) => (
                         <tr key={index}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{entry.date}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{entry.value} lbs</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{entry.value} kg</td>
                         </tr>
                       ))}
                     </tbody>
@@ -215,20 +213,19 @@ const ProgressPage: React.FC = () => {
           
           {activeTab === 'workouts' && (
             <div>
-              <h3 className="text-lg font-bold mb-6">Monthly Workout Frequency</h3>
+              <h3 className="text-lg font-bold mb-6">Monatliche Workout-Häufigkeit</h3>
               
               {/* Workout Frequency Chart */}
               <div className="h-64 relative">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-full">
-                    {/* This is a simplified chart representation */}
                     <div className="relative h-48">
                       <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-200"></div>
                       <div className="absolute left-0 bottom-0 top-0 w-px bg-gray-200"></div>
                       
                       <div className="flex h-full items-end">
                         {workoutData.map((item, index) => (
-                          <div key={index} className=" flex-1 flex flex-col items-center">
+                          <div key={index} className="flex-1 flex flex-col items-center">
                             <div 
                               className="w-8 bg-purple-500 rounded-t-sm" 
                               style={{ 
@@ -255,14 +252,14 @@ const ProgressPage: React.FC = () => {
               </div>
               
               <div className="mt-6">
-                <h4 className="font-medium mb-2">Monthly Summary</h4>
+                <h4 className="font-medium mb-2">Monatliche Übersicht</h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Month</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monat</th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Workouts</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">vs. Previous</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">vs. Vormonat</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -294,7 +291,7 @@ const ProgressPage: React.FC = () => {
           
           {activeTab === 'strength' && (
             <div>
-              <h3 className="text-lg font-bold mb-6">Strength Progress</h3>
+              <h3 className="text-lg font-bold mb-6">Kraftentwicklung</h3>
               
               {/* Strength Progress Charts */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -304,7 +301,6 @@ const ProgressPage: React.FC = () => {
                     <div className="h-32 relative">
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-full">
-                          {/* This is a simplified chart representation */}
                           <div className="relative h-24">
                             <div className="absolute bottom-0 left-0 right-0 h-px bg-gray-200"></div>
                             
@@ -314,7 +310,7 @@ const ProgressPage: React.FC = () => {
                                   <div 
                                     className="w-2 bg-indigo-500 rounded-t-sm" 
                                     style={{ 
-                                      height: `${(value - (data[0] - 50)) / 100 * 100}%`,
+                                      height: `${(value - (data[0] - 20)) / 40 * 100}%`,
                                       maxHeight: '100%'
                                     }}
                                   ></div>
@@ -326,36 +322,36 @@ const ProgressPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="mt-2 flex justify-between">
-                      <span className="text-xs text-gray-500">Start: {data[0]} lbs</span>
-                      <span className="text-xs text-gray-500">Current: {data[data.length - 1]} lbs</span>
+                      <span className="text-xs text-gray-500">Start: {data[0]} kg</span>
+                      <span className="text-xs text-gray-500">Aktuell: {data[data.length - 1]} kg</span>
                     </div>
                     <div className="mt-2 text-sm font-medium text-green-600">
-                      +{data[data.length - 1] - data[0]} lbs improvement
+                      +{data[data.length - 1] - data[0]} kg Verbesserung
                     </div>
                   </div>
                 ))}
               </div>
               
               <div className="mt-8">
-                <h4 className="font-medium mb-3">Personal Records</h4>
+                <h4 className="font-medium mb-3">Persönliche Bestleistungen</h4>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exercise</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current PR</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Starting Weight</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Improvement</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Übung</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aktuelles Maximum</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Startgewicht</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verbesserung</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {Object.entries(strengthData).map(([exercise, data]) => (
                         <tr key={exercise}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{exercise}</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm">{data[data.length - 1]} lbs</td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{data[0]} lbs</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm">{data[data.length - 1]} kg</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{data[0]} kg</td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">
-                            +{data[data.length - 1] - data[0]} lbs
+                            +{data[data.length - 1] - data[0]} kg
                           </td>
                         </tr>
                       ))}
