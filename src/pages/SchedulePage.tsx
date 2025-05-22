@@ -10,26 +10,26 @@ interface ScheduledWorkout {
 }
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const monthNames = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const initialSchedule: ScheduledWorkout[] = [
   {
     id: 1,
-    workoutName: 'Ganzkörpertraining',
+    workoutName: 'Full Body Workout',
     date: new Date(new Date().setDate(new Date().getDate() - 2)),
     time: '07:00',
     completed: true
   },
   {
     id: 2,
-    workoutName: 'Oberkörpetraining',
+    workoutName: 'Upper Body Focus',
     date: new Date(),
     time: '18:30',
     completed: false
   },
   {
     id: 3,
-    workoutName: 'Ganzkörpertraining',
+    workoutName: 'Full Body Workout',
     date: new Date(new Date().setDate(new Date().getDate() + 2)),
     time: '07:00',
     completed: false
@@ -162,7 +162,7 @@ const SchedulePage: React.FC = () => {
       <div className="w-full md:w-2/3">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-800">Trainingsplan</h2>
+            <h2 className="text-xl font-bold text-gray-800">Workout Schedule</h2>
             <div className="flex items-center space-x-4">
               <button onClick={prevMonth} className="p-1 rounded-full hover:bg-gray-100">
                 <ChevronLeft className="h-5 w-5 text-gray-600" />
@@ -204,14 +204,14 @@ const SchedulePage: React.FC = () => {
               onClick={() => setShowAddWorkout(true)}
               className="bg-indigo-600 text-white px-3 py-1 text-sm rounded-md hover:bg-indigo-700 transition"
             >
-              Workout hinzufügen
+              Add Workout
             </button>
           </div>
           
           {selectedDateWorkouts.length === 0 ? (
             <div className="text-center py-8">
               <CalendarIcon className="h-12 w-12 text-gray-300 mx-auto mb-2" />
-              <p className="text-gray-500">Keine Workouts an diesem Tag</p>
+              <p className="text-gray-500">No workouts scheduled for this day</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -257,7 +257,7 @@ const SchedulePage: React.FC = () => {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold">Workout planen</h3>
+                  <h3 className="text-lg font-bold">Schedule Workout</h3>
                   <button onClick={() => setShowAddWorkout(false)}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -266,7 +266,7 @@ const SchedulePage: React.FC = () => {
                 </div>
                 <div className="mb-4">
                   <p className="text-sm text-gray-500 mb-4">
-                    Planen für den Tag: {selectedDate.toDateString()}
+                    Scheduling for: {selectedDate.toDateString()}
                   </p>
                   <div className="space-y-4">
                     <div>
@@ -283,7 +283,7 @@ const SchedulePage: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Uhrzeit
+                        Time
                       </label>
                       <input
                         type="time"
@@ -299,7 +299,7 @@ const SchedulePage: React.FC = () => {
                     onClick={handleAddWorkout}
                     className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
                   >
-                    Workout planen
+                    Schedule Workout
                   </button>
                 </div>
               </div>

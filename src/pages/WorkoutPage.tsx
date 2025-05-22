@@ -1,43 +1,26 @@
-import React, { useState } from 'react';
-import { Dumbbell, Plus, X, Edit, Trash2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Dumbbell, Plus, X, Trash2 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface Workout {
-  id: number;
+  id: string;
   name: string;
+  created_at: string;
   exercises: Exercise[];
 }
 
 interface Exercise {
-  id: number;
+  id: string;
   name: string;
   sets: number;
   reps: number;
   weight: number;
 }
 
-const initialWorkouts: Workout[] = [
-  {
-    id: 1,
-    name: 'Ganzkörper-Workout',
-    exercises: [
-      { id: 1, name: 'Kniebeugen', sets: 3, reps: 12, weight: 60 },
-      { id: 2, name: 'Bankdrücken', sets: 3, reps: 10, weight: 70 },
-      { id: 3, name: 'Kreuzheben', sets: 3, reps: 8, weight: 85 }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Oberkörper-Fokus',
-    exercises: [
-      { id: 1, name: 'Klimmzüge', sets: 3, reps: 8, weight: 0 },
-      { id: 2, name: 'Schulterdrücken', sets: 3, reps: 10, weight: 30 },
-      { id: 3, name: 'Bizeps Curls', sets: 3, reps: 12, weight: 15 }
-    ]
-  }
-];
-
 const WorkoutPage: React.FC = () => {
-  const [workouts, setWorkouts] = useState<Workout[]>(initialWorkouts);
+  const { user } = useAuth0();
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(null);
   const [showAddWorkout, setShowAddWorkout] = useState(false);
   const [newWorkoutName, setNewWorkoutName] = useState('');
@@ -48,67 +31,166 @@ const WorkoutPage: React.FC = () => {
     reps: 10,
     weight: 0
   });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleAddWorkout = () => {
-    if (newWorkoutName.trim() === '') return;
-    
-    const newWorkout: Workout = {
-      id: Date.now(),
-      name: newWorkoutName,
-      exercises: []
-    };
-    
-    setWorkouts([...workouts, newWorkout]);
-    setNewWorkoutName('');
-    setShowAddWorkout(false);
-    setSelectedWorkout(newWorkout);
+  useEffect(() => {
+    if (user?.sub) {
+      fetchWorkouts();
+    }
+  }, [user]);
+
+  const fetchWorkouts = async () => {
+    try {
+      const { data: workoutsData, error: workoutsError } = await supabase
+        .from('workouts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (workoutsError) throw workoutsError;
+
+      const workoutsWithExercises = await Promise.all(
+        workoutsData.map(async (workout) => {
+          const { data: exercisesData, error: exercisesError } = await supabase
+            .from('exercises')
+            .select('*')
+            .eq('workout_id', workout.id)
+            .order('created_at', { ascending: true });
+
+          if (exercisesError) throw exercisesError;
+
+          return {
+            ...workout,
+            exercises: exercisesData || []
+          };
+        })
+      );
+
+      setWorkouts(workoutsWithExercises);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching workouts:', error);
+      setIsLoading(false);
+    }
   };
 
-  const handleAddExercise = () => {
+  const handleAddWorkout = async () => {
+    if (newWorkoutName.trim() === '' || !user?.sub) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('workouts')
+        .insert([
+          {
+            name: newWorkoutName,
+            user_id: user.sub
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const newWorkout = {
+        ...data,
+        exercises: []
+      };
+
+      setWorkouts([newWorkout, ...workouts]);
+      setNewWorkoutName('');
+      setShowAddWorkout(false);
+      setSelectedWorkout(newWorkout);
+    } catch (error) {
+      console.error('Error adding workout:', error);
+    }
+  };
+
+  const handleAddExercise = async () => {
     if (!selectedWorkout || newExercise.name.trim() === '') return;
-    
-    const updatedExercise = {
-      ...newExercise,
-      id: Date.now()
-    };
-    
-    const updatedWorkout = {
-      ...selectedWorkout,
-      exercises: [...selectedWorkout.exercises, updatedExercise]
-    };
-    
-    setWorkouts(workouts.map(w => w.id === selectedWorkout.id ? updatedWorkout : w));
-    setSelectedWorkout(updatedWorkout);
-    setNewExercise({
-      name: '',
-      sets: 3,
-      reps: 10,
-      weight: 0
-    });
-    setShowAddExercise(false);
-  };
 
-  const handleDeleteWorkout = (id: number) => {
-    setWorkouts(workouts.filter(w => w.id !== id));
-    if (selectedWorkout && selectedWorkout.id === id) {
-      setSelectedWorkout(null);
-    }
-  };
+    try {
+      const { data, error } = await supabase
+        .from('exercises')
+        .insert([
+          {
+            ...newExercise,
+            workout_id: selectedWorkout.id
+          }
+        ])
+        .select()
+        .single();
 
-  const handleDeleteExercise = (workoutId: number, exerciseId: number) => {
-    const workout = workouts.find(w => w.id === workoutId);
-    if (!workout) return;
-    
-    const updatedWorkout = {
-      ...workout,
-      exercises: workout.exercises.filter(e => e.id !== exerciseId)
-    };
-    
-    setWorkouts(workouts.map(w => w.id === workoutId ? updatedWorkout : w));
-    if (selectedWorkout && selectedWorkout.id === workoutId) {
+      if (error) throw error;
+
+      const updatedWorkout = {
+        ...selectedWorkout,
+        exercises: [...selectedWorkout.exercises, data]
+      };
+
+      setWorkouts(workouts.map(w => w.id === selectedWorkout.id ? updatedWorkout : w));
       setSelectedWorkout(updatedWorkout);
+      setNewExercise({
+        name: '',
+        sets: 3,
+        reps: 10,
+        weight: 0
+      });
+      setShowAddExercise(false);
+    } catch (error) {
+      console.error('Error adding exercise:', error);
     }
   };
+
+  const handleDeleteWorkout = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('workouts')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setWorkouts(workouts.filter(w => w.id !== id));
+      if (selectedWorkout && selectedWorkout.id === id) {
+        setSelectedWorkout(null);
+      }
+    } catch (error) {
+      console.error('Error deleting workout:', error);
+    }
+  };
+
+  const handleDeleteExercise = async (workoutId: string, exerciseId: string) => {
+    try {
+      const { error } = await supabase
+        .from('exercises')
+        .delete()
+        .eq('id', exerciseId);
+
+      if (error) throw error;
+
+      const workout = workouts.find(w => w.id === workoutId);
+      if (!workout) return;
+
+      const updatedWorkout = {
+        ...workout,
+        exercises: workout.exercises.filter(e => e.id !== exerciseId)
+      };
+
+      setWorkouts(workouts.map(w => w.id === workoutId ? updatedWorkout : w));
+      if (selectedWorkout && selectedWorkout.id === workoutId) {
+        setSelectedWorkout(updatedWorkout);
+      }
+    } catch (error) {
+      console.error('Error deleting exercise:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
